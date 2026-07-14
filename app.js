@@ -407,3 +407,57 @@ if ('IntersectionObserver' in window) {
     section.classList.add('is-visible');
   });
 }
+
+/* Large-screen product-story motion. The calculator itself stays static and fully usable. */
+const storyStages = Array.from(document.querySelectorAll('.story-stage'));
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+let storyAnimationFrame = null;
+
+function clearStoryMotion() {
+  storyStages.forEach(function (stage) {
+    const card = stage.querySelector('[data-story-card]');
+    if (!card) return;
+    card.style.transform = '';
+    card.style.opacity = '';
+    card.style.filter = '';
+  });
+}
+
+function updateStoryMotion() {
+  if (reducedMotion.matches || window.innerWidth <= 1100) {
+    clearStoryMotion();
+    storyAnimationFrame = null;
+    return;
+  }
+
+  const viewportHeight = window.innerHeight;
+  storyStages.forEach(function (stage, index) {
+    const card = stage.querySelector('[data-story-card]');
+    if (!card) return;
+    stage.style.zIndex = String(index + 1);
+    const rect = stage.getBoundingClientRect();
+    const travel = Math.max(1, rect.height - viewportHeight * 0.54);
+    const progress = Math.max(0, Math.min(1, -rect.top / travel));
+    const exitProgress = Math.max(0, Math.min(1, (progress - 0.58) / 0.42));
+    const scale = 1 - exitProgress * 0.055;
+    const rotate = exitProgress * 3.5;
+    const lift = exitProgress * -8;
+
+    card.style.transform = 'translateY(' + lift.toFixed(2) + 'px) scale(' + scale.toFixed(4) + ') rotateX(' + rotate.toFixed(2) + 'deg)';
+    card.style.opacity = String(1 - exitProgress * 0.25);
+    card.style.filter = 'brightness(' + (1 - exitProgress * 0.12).toFixed(3) + ') blur(' + (exitProgress * 1.1).toFixed(2) + 'px)';
+  });
+  storyAnimationFrame = null;
+}
+
+function requestStoryMotion() {
+  if (storyAnimationFrame !== null) return;
+  storyAnimationFrame = window.requestAnimationFrame(updateStoryMotion);
+}
+
+window.addEventListener('scroll', requestStoryMotion, { passive: true });
+window.addEventListener('resize', requestStoryMotion);
+if (typeof reducedMotion.addEventListener === 'function') {
+  reducedMotion.addEventListener('change', requestStoryMotion);
+}
+updateStoryMotion();

@@ -19,6 +19,7 @@
     </a>
     <nav aria-label="主导航">
       <a class="is-active" href="#calculator">工作台</a>
+      <a href="#overview">作品说明</a>
       <a href="#import">导入</a>
       <a href="#logic">规则</a>
     </nav>
@@ -29,28 +30,6 @@
 
   <main id="top">
     <section id="calculator" class="app-shell" aria-labelledby="page-title">
-      <aside class="sidebar" aria-label="工作台导航">
-        <div class="workspace-name">
-          <span class="workspace-avatar">R</span>
-          <div><strong>公开工作区</strong><small>补货计划</small></div>
-        </div>
-        <div class="side-group">
-          <span>工作</span>
-          <a class="is-current" href="#calculator"><b aria-hidden="true">⌁</b>补货判断</a>
-          <a href="#import"><b aria-hidden="true">⇧</b>导入SKU</a>
-          <a href="#impact"><b aria-hidden="true">↗</b>效率说明</a>
-        </div>
-        <div class="side-group">
-          <span>了解</span>
-          <a href="#logic"><b aria-hidden="true">?</b>计算规则</a>
-          <a href="#reliability"><b aria-hidden="true">✓</b>异常处理</a>
-        </div>
-        <div class="side-note">
-          <span class="live-dot" aria-hidden="true"></span>
-          <p><strong>本地计算</strong><br>上传文件不会发送到服务器。</p>
-        </div>
-      </aside>
-
       <div class="workbench">
         <div class="workbench-header entrance entrance-one">
           <div>
@@ -182,8 +161,42 @@
       </div>
     </section>
 
-    <section id="import" class="content-section reveal">
-      <div class="section-copy">
+    <section id="overview" class="story-stage">
+      <div class="content-section overview-section story-card reveal" data-story-card>
+        <div class="section-copy">
+          <p class="eyebrow">WHAT THIS TOOL DOES</p>
+          <h2>从库存预测，走到可以执行的补货决定</h2>
+          <p>这个作品不是简单套公式。它把周度判断、未来库存、物流时间和箱规放进同一条计算链，最后给出可以直接执行的下单建议。</p>
+          <div class="audience-tags"><span>计划运营</span><span>库存管理</span><span>跨境电商</span><span>供应链</span></div>
+        </div>
+        <div class="product-map">
+          <article>
+            <span class="map-index">输入</span>
+            <div><strong>只填写5项条件</strong><p>判断周、SKU、生产交期、入库上架天数和箱规。</p></div>
+            <b aria-hidden="true">→</b>
+          </article>
+          <article>
+            <span class="map-index">分析</span>
+            <div><strong>沿未来库存寻找风险</strong><p>识别下一次有效断货，自动生成21天预警并判断本周时机。</p></div>
+            <b aria-hidden="true">⌁</b>
+          </article>
+          <article>
+            <span class="map-index">输出</span>
+            <div><strong>一次得到8项结果</strong><p>包括入库、断货、预警、覆盖天数、平均日销和整箱补货量。</p></div>
+            <b aria-hidden="true">✓</b>
+          </article>
+          <article>
+            <span class="map-index">保护</span>
+            <div><strong>遇到异常就停止误导</strong><p>未来数据不足、日期断档或持续缺货时，不会强行给出虚假精确答案。</p></div>
+            <b aria-hidden="true">!</b>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="import" class="story-stage">
+      <div class="content-section story-card reveal" data-story-card>
+       <div class="section-copy">
         <p class="eyebrow">DATA IMPORT</p>
         <h2>导入新的SKU</h2>
         <p>按模板准备日级库存和控制销量。导入成功后，新SKU会自动出现在工作台，不需要改代码。</p>
@@ -192,7 +205,7 @@
           <button id="download-template" class="secondary-button" type="button">下载模板</button>
         </div>
         <p id="import-status" class="import-status" role="status">文件只在你的浏览器中读取，不会上传到服务器。</p>
-      </div>
+       </div>
       <div class="data-preview" aria-label="CSV格式示例">
         <div class="preview-bar"><span>new_sku_template.csv</span><span>UTF-8</span></div>
         <div class="preview-row preview-head"><span>date</span><span>sku</span><span>control_sales</span><span>control_inventory</span></div>
@@ -200,53 +213,62 @@
         <div class="preview-row"><span>2026-07-14</span><span>NEW-SKU</span><span>35</span><span>2065</span></div>
         <div class="preview-row"><span>2026-07-15</span><span>NEW-SKU</span><span>31</span><span>2034</span></div>
         <div class="preview-foot">日期须连续 · 同一SKU不能有重复日期 · 控制销量不能为负数</div>
+       </div>
       </div>
     </section>
 
-    <section id="impact" class="content-section impact-section reveal">
-      <div class="section-copy">
+    <section id="impact" class="story-stage">
+      <div class="content-section impact-section story-card reveal" data-story-card>
+       <div class="section-copy">
         <p class="eyebrow">MEASURABLE IMPACT</p>
         <h2>它具体减少了什么</h2>
         <p>只展示能从程序和演示数据直接核对的数量，不使用未经测试的节省时间百分比。</p>
-      </div>
+       </div>
       <div class="impact-list">
         <div><strong>5 → 8</strong><p>填写5项条件，一次输出8项补货结果</p></div>
         <div><strong>1,826</strong><p>单个SKU可连续检查约5年的日级数据</p></div>
         <div><strong>36,520</strong><p>20个SKU的演示记录可自动分组和校验</p></div>
         <div><strong>0次</strong><p>补货数量无需再手工换算整箱</p></div>
+       </div>
       </div>
     </section>
 
-    <section id="logic" class="content-section logic-section reveal">
-      <div class="section-copy">
+    <section id="logic" class="story-stage">
+      <div class="content-section logic-section story-card reveal" data-story-card>
+       <div class="section-copy">
         <p class="eyebrow">CALCULATION LOGIC</p>
         <h2>四步得到补货建议</h2>
         <p>规则保持透明，每个输出都能回到原始日期和公式核对。</p>
-      </div>
+       </div>
       <ol class="logic-list">
         <li><span>A</span><div><strong>预计入库日期</strong><p>周一 + 生产交期 + 入库上架天数。</p></div></li>
         <li><span>B</span><div><strong>断货预警日期</strong><p>下一次预计断货日向前推21天。</p></div></li>
         <li><span>判</span><div><strong>本周下单判断</strong><p>A晚于或等于B所在周周日，则需要下单。</p></div></li>
         <li><span>E</span><div><strong>整箱补货数量</strong><p>覆盖天数 × 平均日销，再按箱规向上取整。</p></div></li>
-      </ol>
+       </ol>
+      </div>
     </section>
 
-    <section id="reliability" class="content-section reliability-section reveal">
-      <div class="section-copy">
+    <section id="reliability" class="story-stage">
+      <div class="content-section reliability-section story-card reveal" data-story-card>
+       <div class="section-copy">
         <p class="eyebrow">GUARDRAILS</p>
         <h2>数据不完整时，不强行给答案</h2>
-      </div>
+       </div>
       <div class="guardrail-grid">
         <article><span>↗</span><strong>未来数据不够</strong><p>明确告诉你预测到哪天、还缺到哪天。</p></article>
         <article><span>⟳</span><strong>当前已经缺货</strong><p>区分临时缺货、后续恢复和持续缺货。</p></article>
         <article><span>⊘</span><strong>日期有问题</strong><p>不是星期一、重复或断档都会停止计算。</p></article>
         <article><span>!</span><strong>已经错过预警</strong><p>标准公式不适用时，避免输出误导数量。</p></article>
+       </div>
       </div>
     </section>
 
-    <section class="source-section reveal">
-      <div><p class="eyebrow">OPEN SOURCE</p><h2>公开逻辑，方便审核和复用</h2><p>仓库包含网页版本、11项计算测试和Google Sheets Apps Script版本。</p></div>
-      <a id="repo-link-bottom" class="primary-button" href="https://github.com/HululuOvO/replenishiq" target="_blank" rel="noopener"><span>查看GitHub源码</span><span aria-hidden="true">↗</span></a>
+    <section class="story-stage source-stage">
+      <div class="source-section story-card reveal" data-story-card>
+       <div><p class="eyebrow">OPEN SOURCE</p><h2>公开逻辑，方便审核和复用</h2><p>仓库包含网页版本、11项计算测试和Google Sheets Apps Script版本。</p></div>
+       <a id="repo-link-bottom" class="primary-button" href="https://github.com/HululuOvO/replenishiq" target="_blank" rel="noopener"><span>查看GitHub源码</span><span aria-hidden="true">↗</span></a>
+      </div>
     </section>
   </main>
 

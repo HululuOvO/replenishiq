@@ -1,6 +1,6 @@
-# ReplenishIQ｜每周补货判断工具
+# 每周补货判断工具
 
-这是一个可以直接放在 GitHub Pages 上使用的公开补货工具。界面采用轻量工作台布局，打开后可以直接计算，不是只有介绍内容的展示页。
+这是一个可以直接放在 GitHub Pages 上使用的公开补货工具。
 
 用户无需登录、无需安装软件、无需授权 Google 账号，即可在浏览器中：
 
@@ -30,8 +30,8 @@
 - GitHub Pages 可以直接托管；
 - 上传 CSV 时，数据只保留在使用者当前浏览器内存；
 - 刷新页面后，导入的数据自动清除。
-- 工作台会同步绘制未来控制库存曲线和关键日期线，方便快速核对断货风险；
-- 页面提供轻量进入动画和滚动动效，并兼容系统“减少动态效果”设置。
+
+页面采用完整作品展示结构：首屏是可以直接操作的补货工作台，向下滚动可以依次查看工具用途、新 SKU 导入、可核验的处理规模、计算规则、异常保护和开源代码。大屏使用轻量叠页动效，小屏自动切换为普通纵向阅读；动效不会改变计算结果，也不会阻挡表单操作。
 
 ## 效率说明
 
@@ -147,7 +147,7 @@ http://localhost:8080
 需要 Node.js 18 或更高版本：
 
 ```bash
-node calculator.test.js
+node tests/calculator.test.js
 ```
 
 测试覆盖：
@@ -198,10 +198,11 @@ const PUBLIC_LINKS = {
 ├── styles.css                 # 响应式样式
 ├── calculator.js              # 可独立测试的补货计算核心
 ├── app.js                     # 页面交互、CSV导入和结果展示
-├── replenishment_apps_script.gs
+├── apps-script/
+│   └── replenishment_apps_script.gs
 │                               # Google Sheets生产版本
-├── GOOGLE_SHEETS_GUIDE.md      # Google Sheets安装说明
-├── calculator.test.js          # 无依赖测试
+├── tests/
+│   └── calculator.test.js      # 无依赖测试
 ├── DEPLOYMENT_GUIDE.md         # GitHub Pages发布教程
 ├── LICENSE
 └── README.md
@@ -209,7 +210,7 @@ const PUBLIC_LINKS = {
 
 ## Google Sheets 生产版
 
-`replenishment_apps_script.gs` 是绑定到 Google Sheets 的生产实现，包含：
+`apps-script/replenishment_apps_script.gs` 是绑定到 Google Sheets 的生产实现，包含：
 
 - 编辑后自动计算；
 - 批量计算全部 SKU；
