@@ -9,7 +9,8 @@
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-  <div class="announcement">公开演示版 · 数据只在当前浏览器内处理</div>
+  <div class="page-ambient" aria-hidden="true"><i></i><i></i><i></i></div>
+  <div class="announcement"><span class="announce-dot" aria-hidden="true"></span>公开演示版 · 数据只在当前浏览器内处理 <span class="announce-arrow" aria-hidden="true">→</span></div>
 
   <header class="topbar">
     <a class="brand" href="#top" aria-label="返回工作台顶部">
@@ -51,16 +52,24 @@
       </aside>
 
       <div class="workbench">
-        <div class="workbench-header">
+        <div class="workbench-header entrance entrance-one">
           <div>
-            <p class="eyebrow">Inventory planning / Weekly review</p>
-            <h1 id="page-title">补货判断工作台</h1>
-            <p>输入一个SKU的本周条件，立即得到下单判断和整箱补货数量。</p>
+            <p class="hero-badge"><span aria-hidden="true"></span>Inventory planning · Weekly review</p>
+            <h1 id="page-title">让每周补货判断<br><em>更快，也更清楚。</em></h1>
+            <p>输入一个SKU的本周条件，系统会沿着未来库存曲线找到断货点，并计算下单时间和整箱补货数量。</p>
           </div>
           <div class="header-meta"><span>规则版本</span><strong>v1.0 · 21天预警</strong></div>
         </div>
 
-        <div class="tool-grid" role="region" aria-label="补货计算工作区">
+        <div class="quick-strip entrance entrance-two" aria-label="工具能力概览">
+          <div><span>预测范围</span><strong>2026–2030</strong></div>
+          <div><span>演示SKU</span><strong>20个</strong></div>
+          <div><span>计算输出</span><strong>8项</strong></div>
+          <div class="quick-live"><span><i></i>当前状态</span><strong>可直接使用</strong></div>
+        </div>
+
+        <div class="tool-grid entrance entrance-three" role="region" aria-label="补货计算工作区">
+          <span class="tool-glow" aria-hidden="true"></span>
           <form id="calculator-form" class="input-panel" novalidate>
             <div class="panel-heading">
               <div><p class="panel-label">INPUT</p><h2>判断条件</h2></div>
@@ -106,6 +115,7 @@
             </div>
 
             <div id="decision-banner" class="decision-banner decision-idle">
+              <span class="decision-orbit" aria-hidden="true"><i></i><i></i><i></i></span>
               <div class="decision-copy">
                 <span id="decision-kicker">等待计算</span>
                 <strong id="decision-value">待计算</strong>
@@ -115,6 +125,33 @@
                 <span>建议补货数量 E</span>
                 <strong id="result-quantity">待计算</strong>
                 <small>按箱规向上取整</small>
+              </div>
+            </div>
+
+            <div class="inventory-insight">
+              <div class="insight-heading">
+                <div><span>未来控制库存</span><strong id="trend-sku">正在载入</strong></div>
+                <span id="trend-range">载入中</span>
+              </div>
+              <div class="chart-wrap" aria-label="未来控制库存趋势图">
+                <svg id="inventory-chart" viewBox="0 0 640 170" role="img" aria-labelledby="chart-title chart-desc" preserveAspectRatio="none">
+                  <title id="chart-title">未来控制库存趋势</title>
+                  <desc id="chart-desc">显示当前SKU从判断周开始的未来控制库存变化。</desc>
+                  <defs>
+                    <linearGradient id="chart-fill" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#6b6cf1" stop-opacity=".28"></stop>
+                      <stop offset="100%" stop-color="#6b6cf1" stop-opacity="0"></stop>
+                    </linearGradient>
+                  </defs>
+                  <line class="chart-grid" x1="0" y1="35" x2="640" y2="35"></line>
+                  <line class="chart-grid" x1="0" y1="85" x2="640" y2="85"></line>
+                  <line class="chart-grid" x1="0" y1="135" x2="640" y2="135"></line>
+                  <path id="trend-area" class="trend-area" d=""></path>
+                  <path id="trend-line" class="trend-line" d=""></path>
+                  <line id="trend-zero-line" class="zero-line" x1="0" y1="150" x2="640" y2="150"></line>
+                  <circle id="trend-stockout-dot" class="stockout-dot" cx="0" cy="0" r="5"></circle>
+                </svg>
+                <div class="chart-legend"><span><i class="legend-inventory"></i>控制库存</span><span><i class="legend-zero"></i>断货线</span></div>
               </div>
             </div>
 
@@ -128,6 +165,14 @@
               <div class="wide"><dt>预计覆盖结束日 F</dt><dd id="result-cover-end">待计算</dd></div>
             </dl>
 
+            <div class="date-flow" aria-label="关键日期流程">
+              <div class="date-flow-line"><i></i></div>
+              <div><span class="flow-dot flow-start"></span><small>判断周</small><strong id="timeline-week">待计算</strong></div>
+              <div><span class="flow-dot flow-warning"></span><small>预警 B</small><strong id="timeline-warning">待计算</strong></div>
+              <div><span class="flow-dot flow-stockout"></span><small>断货 S</small><strong id="timeline-stockout">待计算</strong></div>
+              <div><span class="flow-dot flow-eta"></span><small>入库 A</small><strong id="timeline-eta">待计算</strong></div>
+            </div>
+
             <div class="audit-box">
               <span class="audit-icon" aria-hidden="true">i</span>
               <div><strong>为什么是这个结果</strong><p id="audit-text">尚未执行计算。</p></div>
@@ -137,7 +182,7 @@
       </div>
     </section>
 
-    <section id="import" class="content-section">
+    <section id="import" class="content-section reveal">
       <div class="section-copy">
         <p class="eyebrow">DATA IMPORT</p>
         <h2>导入新的SKU</h2>
@@ -158,7 +203,7 @@
       </div>
     </section>
 
-    <section id="impact" class="content-section impact-section">
+    <section id="impact" class="content-section impact-section reveal">
       <div class="section-copy">
         <p class="eyebrow">MEASURABLE IMPACT</p>
         <h2>它具体减少了什么</h2>
@@ -172,7 +217,7 @@
       </div>
     </section>
 
-    <section id="logic" class="content-section logic-section">
+    <section id="logic" class="content-section logic-section reveal">
       <div class="section-copy">
         <p class="eyebrow">CALCULATION LOGIC</p>
         <h2>四步得到补货建议</h2>
@@ -186,7 +231,7 @@
       </ol>
     </section>
 
-    <section id="reliability" class="content-section reliability-section">
+    <section id="reliability" class="content-section reliability-section reveal">
       <div class="section-copy">
         <p class="eyebrow">GUARDRAILS</p>
         <h2>数据不完整时，不强行给答案</h2>
@@ -199,7 +244,7 @@
       </div>
     </section>
 
-    <section class="source-section">
+    <section class="source-section reveal">
       <div><p class="eyebrow">OPEN SOURCE</p><h2>公开逻辑，方便审核和复用</h2><p>仓库包含网页版本、11项计算测试和Google Sheets Apps Script版本。</p></div>
       <a id="repo-link-bottom" class="primary-button" href="https://github.com/HululuOvO/replenishiq" target="_blank" rel="noopener"><span>查看GitHub源码</span><span aria-hidden="true">↗</span></a>
     </section>

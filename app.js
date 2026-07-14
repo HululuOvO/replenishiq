@@ -35,7 +35,18 @@ const elements = {
   resultAvgSales: document.querySelector('#result-avg-sales'),
   resultQuantity: document.querySelector('#result-quantity'),
   resultCoverEnd: document.querySelector('#result-cover-end'),
-  auditText: document.querySelector('#audit-text')
+  auditText: document.querySelector('#audit-text'),
+  trendArea: document.querySelector('#trend-area'),
+  trendLine: document.querySelector('#trend-line'),
+  trendZeroLine: document.querySelector('#trend-zero-line'),
+  trendStockoutDot: document.querySelector('#trend-stockout-dot'),
+  trendSku: document.querySelector('#trend-sku'),
+  trendRange: document.querySelector('#trend-range'),
+  inventoryInsight: document.querySelector('.inventory-insight'),
+  timelineWeek: document.querySelector('#timeline-week'),
+  timelineWarning: document.querySelector('#timeline-warning'),
+  timelineStockout: document.querySelector('#timeline-stockout'),
+  timelineEta: document.querySelector('#timeline-eta')
 };
 
 function configurePublicLinks() {
@@ -85,6 +96,63 @@ function updateDatasetSummary() {
     (selected.source === 'csv' ? 'CSV导入' : '演示数据') + ' · ' +
     records[0].date + ' 至 ' + records[records.length - 1].date +
     ' · ' + records.length.toLocaleString('zh-CN') + '天';
+  renderInventoryChart();
+}
+
+function renderInventoryChart() {
+  const selected = dataset.get(elements.sku.value);
+  if (!selected || !elements.trendLine) return;
+
+  const records = selected.records;
+  let startIndex = records.findIndex(function (record) {
+    return record.date >= elements.weekMonday.value;
+  });
+  if (startIndex < 0) startIndex = 0;
+
+  const visible = records.slice(startIndex, startIndex + 140);
+  if (visible.length < 2) return;
+
+  const inventories = visible.map(function (record) { return Number(record.controlInventory); });
+  const maximum = Math.max.apply(null, inventories.concat([1]));
+  const minimum = Math.min.apply(null, inventories.concat([0]));
+  const range = Math.max(1, maximum - minimum);
+  const width = 640;
+  const top = 10;
+  const height = 140;
+
+  const points = inventories.map(function (inventory, index) {
+    const x = index * width / (inventories.length - 1);
+    const y = top + (maximum - inventory) / range * height;
+    return { x: x, y: y };
+  });
+
+  const linePath = points.map(function (point, index) {
+    return (index === 0 ? 'M' : 'L') + point.x.toFixed(2) + ' ' + point.y.toFixed(2);
+  }).join(' ');
+  const areaPath = linePath +
+    ' L' + points[points.length - 1].x.toFixed(2) + ' 160' +
+    ' L' + points[0].x.toFixed(2) + ' 160 Z';
+  const zeroY = top + (maximum / range) * height;
+
+  elements.trendLine.setAttribute('d', linePath);
+  elements.trendArea.setAttribute('d', areaPath);
+  elements.trendZeroLine.setAttribute('y1', zeroY.toFixed(2));
+  elements.trendZeroLine.setAttribute('y2', zeroY.toFixed(2));
+  elements.trendSku.textContent = elements.sku.value;
+  elements.trendRange.textContent = visible[0].date + ' — ' + visible[visible.length - 1].date;
+
+  const stockoutIndex = inventories.findIndex(function (inventory) { return inventory <= 0; });
+  if (stockoutIndex >= 0) {
+    elements.trendStockoutDot.setAttribute('cx', points[stockoutIndex].x.toFixed(2));
+    elements.trendStockoutDot.setAttribute('cy', points[stockoutIndex].y.toFixed(2));
+    elements.trendStockoutDot.style.display = '';
+  } else {
+    elements.trendStockoutDot.style.display = 'none';
+  }
+
+  elements.inventoryInsight.classList.remove('is-animating');
+  void elements.inventoryInsight.offsetWidth;
+  elements.inventoryInsight.classList.add('is-animating');
 }
 
 function getSettings() {
@@ -117,6 +185,8 @@ function renderResult(result) {
       ? 'decision-no'
       : 'decision-pending';
   elements.banner.className = 'decision-banner ' + bannerClass;
+  void elements.banner.offsetWidth;
+  elements.banner.classList.add('is-updated');
 
   if (result.needOrder === true) {
     elements.decisionKicker.textContent = result.quantity === null ? '需要人工介入' : '本周决策';
@@ -144,6 +214,11 @@ function renderResult(result) {
     return numberText(value, 0) + '件';
   });
   elements.resultCoverEnd.textContent = displayValue(result.coverEndDate);
+  elements.timelineWeek.textContent = elements.weekMonday.value || '—';
+  elements.timelineWarning.textContent = displayValue(result.warningDate);
+  elements.timelineStockout.textContent = displayValue(result.stockoutDate);
+  elements.timelineEta.textContent = displayValue(result.eta);
+  renderInventoryChart();
 
   if (result.statusCode === 'order') {
     elements.auditText.textContent =
@@ -172,6 +247,11 @@ function renderError(error) {
     elements.resultCoverEnd
   ].forEach(function (element) { element.textContent = '—'; });
   elements.auditText.textContent = '系统已停止输出，避免使用不完整数据形成错误补货建议。';
+  elements.timelineWeek.textContent = elements.weekMonday.value || '—';
+  elements.timelineWarning.textContent = '—';
+  elements.timelineStockout.textContent = '—';
+  elements.timelineEta.textContent = '—';
+  renderInventoryChart();
 }
 
 function runCalculation() {
@@ -294,7 +374,13 @@ elements.form.addEventListener('submit', function (event) {
 });
 elements.resetButton.addEventListener('click', resetDemo);
 elements.copyResult.addEventListener('click', copyResult);
-elements.sku.addEventListener('change', updateDatasetSummary);
+elements.sku.addEventListener('change', function () {
+  updateDatasetSummary();
+  runCalculation();
+});
+elements.weekMonday.addEventListener('change', function () {
+  renderInventoryChart();
+});
 elements.csvFile.addEventListener('change', function (event) {
   handleCsvFile(event.target.files[0]);
 });
@@ -303,3 +389,21 @@ elements.downloadTemplate.addEventListener('click', downloadCsvTemplate);
 configurePublicLinks();
 refreshSkuOptions('DEMO-FAST');
 runCalculation();
+
+if ('IntersectionObserver' in window) {
+  const revealObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(function (section) {
+    revealObserver.observe(section);
+  });
+} else {
+  document.querySelectorAll('.reveal').forEach(function (section) {
+    section.classList.add('is-visible');
+  });
+}
