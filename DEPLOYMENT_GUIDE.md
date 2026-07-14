@@ -5,8 +5,8 @@
 发布完成后会有两个不同链接：
 
 ```text
-产品网站：https://你的用户名.github.io/仓库名/
-代码仓库：https://github.com/你的用户名/仓库名
+产品网站：https://hululuovo.github.io/replenishiq/
+代码仓库：https://github.com/HululuOvO/replenishiq
 ```
 
 AdventureX 材料中应优先填写“产品网站”，同时附上“代码仓库”。
@@ -105,10 +105,10 @@ GitHub 仓库根目录应该直接就是 `index.html`。
 5. 等待 GitHub 完成部署。
 6. 刷新 `Settings → Pages`。
 
-页面会显示类似地址：
+页面会显示：
 
 ```text
-https://你的用户名.github.io/replenishiq/
+https://hululuovo.github.io/replenishiq/
 ```
 
 点击该地址，应该直接看到“每周补货判断工具”，并自动得到默认示例的计算结果。
@@ -117,8 +117,8 @@ https://你的用户名.github.io/replenishiq/
 
 打开网站后按顺序检查：
 
-1. 首屏显示“每周补货判断工具”。
-2. 点击“立即在线体验”能跳到计算区域。
+1. 首屏显示“把每周补货判断，变成一次清楚的计算”。
+2. 点击“用示例数据计算”能跳到计算区域。
 3. 默认选择 `DEMO-FAST`。
 4. 默认日期为 `2026-07-13`。
 5. 页面自动输出“需要下单”。
@@ -140,7 +140,7 @@ https://你的用户名.github.io/replenishiq/
 
 ```javascript
 const PUBLIC_LINKS = {
-  githubRepository: '',
+  githubRepository: 'https://github.com/HululuOvO/replenishiq',
   googleSheetCopy: ''
 };
 ```
@@ -149,7 +149,7 @@ const PUBLIC_LINKS = {
 
 ```javascript
 const PUBLIC_LINKS = {
-  githubRepository: 'https://github.com/你的用户名/replenishiq',
+  githubRepository: 'https://github.com/HululuOvO/replenishiq',
   googleSheetCopy: 'https://docs.google.com/spreadsheets/d/脱敏文件ID/copy'
 };
 ```

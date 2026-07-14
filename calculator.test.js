@@ -1,7 +1,7 @@
 'use strict';
 
 const assert = require('node:assert/strict');
-const Core = require('../calculator.js');
+const Core = require('./calculator.js');
 
 function dailyRecords(startDate, days, sales, initialStock, receiptByDate) {
   const start = Core.parseISODate(startDate);

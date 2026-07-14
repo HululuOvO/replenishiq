@@ -2,7 +2,7 @@
 
 /* 发布前只需要替换这两个地址；留空时网站其他计算功能不受影响。 */
 const PUBLIC_LINKS = {
-  githubRepository: '',
+  githubRepository: 'https://github.com/HululuOvO/replenishiq',
   googleSheetCopy: ''
 };
 

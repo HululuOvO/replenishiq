@@ -16,11 +16,9 @@
 
 ## 在线地址
 
-部署后填写：
-
-- Product: `https://YOUR_USERNAME.github.io/YOUR_REPOSITORY/`
-- Source: `https://github.com/YOUR_USERNAME/YOUR_REPOSITORY`
-- Google Sheets template: `YOUR_PUBLIC_COPY_LINK`
+- Product: `https://hululuovo.github.io/replenishiq/`
+- Source: `https://github.com/HululuOvO/replenishiq`
+- Google Sheets template: 暂未公开
 
 ## 可以做什么
 
@@ -147,7 +145,7 @@ http://localhost:8080
 需要 Node.js 18 或更高版本：
 
 ```bash
-node tests/calculator.test.js
+node calculator.test.js
 ```
 
 测试覆盖：
@@ -183,8 +181,8 @@ node tests/calculator.test.js
 
 ```javascript
 const PUBLIC_LINKS = {
-  githubRepository: 'https://github.com/YOUR_USERNAME/YOUR_REPOSITORY',
-  googleSheetCopy: 'https://docs.google.com/spreadsheets/d/YOUR_FILE_ID/copy'
+  githubRepository: 'https://github.com/HululuOvO/replenishiq',
+  googleSheetCopy: ''
 };
 ```
 
@@ -198,11 +196,10 @@ const PUBLIC_LINKS = {
 ├── styles.css                 # 响应式样式
 ├── calculator.js              # 可独立测试的补货计算核心
 ├── app.js                     # 页面交互、CSV导入和结果展示
-├── apps-script/
-│   └── replenishment_apps_script.gs
+├── replenishment_apps_script.gs
 │                               # Google Sheets生产版本
-├── tests/
-│   └── calculator.test.js      # 无依赖测试
+├── GOOGLE_SHEETS_GUIDE.md      # Google Sheets安装说明
+├── calculator.test.js          # 无依赖测试
 ├── DEPLOYMENT_GUIDE.md         # GitHub Pages发布教程
 ├── LICENSE
 └── README.md
@@ -210,7 +207,7 @@ const PUBLIC_LINKS = {
 
 ## Google Sheets 生产版
 
-`apps-script/replenishment_apps_script.gs` 是绑定到 Google Sheets 的生产实现，包含：
+`replenishment_apps_script.gs` 是绑定到 Google Sheets 的生产实现，包含：
 
 - 编辑后自动计算；
 - 批量计算全部 SKU；
