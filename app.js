@@ -46,7 +46,11 @@ const elements = {
   timelineWeek: document.querySelector('#timeline-week'),
   timelineWarning: document.querySelector('#timeline-warning'),
   timelineStockout: document.querySelector('#timeline-stockout'),
-  timelineEta: document.querySelector('#timeline-eta')
+  timelineEta: document.querySelector('#timeline-eta'),
+  storyWeek: document.querySelector('#story-week'),
+  storyWarning: document.querySelector('#story-warning'),
+  storyStockout: document.querySelector('#story-stockout'),
+  storyEta: document.querySelector('#story-eta')
 };
 
 function configurePublicLinks() {
@@ -218,6 +222,10 @@ function renderResult(result) {
   elements.timelineWarning.textContent = displayValue(result.warningDate);
   elements.timelineStockout.textContent = displayValue(result.stockoutDate);
   elements.timelineEta.textContent = displayValue(result.eta);
+  elements.storyWeek.textContent = elements.weekMonday.value || '—';
+  elements.storyWarning.textContent = displayValue(result.warningDate);
+  elements.storyStockout.textContent = displayValue(result.stockoutDate);
+  elements.storyEta.textContent = displayValue(result.eta);
   renderInventoryChart();
 
   if (result.statusCode === 'order') {
@@ -251,6 +259,10 @@ function renderError(error) {
   elements.timelineWarning.textContent = '—';
   elements.timelineStockout.textContent = '—';
   elements.timelineEta.textContent = '—';
+  elements.storyWeek.textContent = elements.weekMonday.value || '—';
+  elements.storyWarning.textContent = '—';
+  elements.storyStockout.textContent = '—';
+  elements.storyEta.textContent = '—';
   renderInventoryChart();
 }
 

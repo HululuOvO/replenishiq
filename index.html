@@ -212,7 +212,10 @@
         <div class="preview-row"><span>2026-07-13</span><span>NEW-SKU</span><span>32</span><span>2100</span></div>
         <div class="preview-row"><span>2026-07-14</span><span>NEW-SKU</span><span>35</span><span>2065</span></div>
         <div class="preview-row"><span>2026-07-15</span><span>NEW-SKU</span><span>31</span><span>2034</span></div>
+        <div class="preview-row"><span>2026-07-16</span><span>NEW-SKU</span><span>33</span><span>2001</span></div>
+        <div class="preview-row"><span>2026-07-17</span><span>NEW-SKU</span><span>30</span><span>1971</span></div>
         <div class="preview-foot">日期须连续 · 同一SKU不能有重复日期 · 控制销量不能为负数</div>
+        <div class="import-result-strip"><span>导入完成后</span><strong>自动识别 NEW-SKU</strong><em><i></i>可立即计算</em></div>
        </div>
       </div>
     </section>
@@ -223,6 +226,9 @@
         <p class="eyebrow">MEASURABLE IMPACT</p>
         <h2>它具体减少了什么</h2>
         <p>只展示能从程序和演示数据直接核对的数量，不使用未经测试的节省时间百分比。</p>
+        <div class="impact-flow" aria-label="处理方式变化">
+          <span>跨表查找</span><i aria-hidden="true">→</i><span>日期计算</span><i aria-hidden="true">→</i><strong>一次输出</strong>
+        </div>
        </div>
       <div class="impact-list">
         <div><strong>5 → 8</strong><p>填写5项条件，一次输出8项补货结果</p></div>
@@ -239,6 +245,18 @@
         <p class="eyebrow">CALCULATION LOGIC</p>
         <h2>四步得到补货建议</h2>
         <p>规则保持透明，每个输出都能回到原始日期和公式核对。</p>
+        <div class="live-trace">
+          <div class="trace-heading"><span>当前示例计算轨迹</span><strong>LIVE</strong></div>
+          <div class="trace-dates">
+            <span><small>判断周</small><b id="story-week">待计算</b></span>
+            <i aria-hidden="true">→</i>
+            <span><small>预警</small><b id="story-warning">待计算</b></span>
+            <i aria-hidden="true">→</i>
+            <span><small>断货</small><b id="story-stockout">待计算</b></span>
+            <i aria-hidden="true">→</i>
+            <span><small>入库</small><b id="story-eta">待计算</b></span>
+          </div>
+        </div>
        </div>
       <ol class="logic-list">
         <li><span>A</span><div><strong>预计入库日期</strong><p>周一 + 生产交期 + 入库上架天数。</p></div></li>
@@ -254,6 +272,8 @@
        <div class="section-copy">
         <p class="eyebrow">GUARDRAILS</p>
         <h2>数据不完整时，不强行给答案</h2>
+        <p>补货建议会影响真实采购，所以系统先判断数据是否可信，再决定能不能继续计算。</p>
+        <div class="quality-strip"><span><i></i>输入校验</span><span><i></i>日期连续</span><span><i></i>库存周期</span><span><i></i>预测范围</span></div>
        </div>
       <div class="guardrail-grid">
         <article><span>↗</span><strong>未来数据不够</strong><p>明确告诉你预测到哪天、还缺到哪天。</p></article>
@@ -266,8 +286,15 @@
 
     <section class="story-stage source-stage">
       <div class="source-section story-card reveal" data-story-card>
-       <div><p class="eyebrow">OPEN SOURCE</p><h2>公开逻辑，方便审核和复用</h2><p>仓库包含网页版本、11项计算测试和Google Sheets Apps Script版本。</p></div>
-       <a id="repo-link-bottom" class="primary-button" href="https://github.com/HululuOvO/replenishiq" target="_blank" rel="noopener"><span>查看GitHub源码</span><span aria-hidden="true">↗</span></a>
+       <div class="source-copy"><p class="eyebrow">OPEN SOURCE</p><h2>公开逻辑，方便审核和复用</h2><p>仓库同时提供网页工具、计算核心、自动化测试和Google Sheets Apps Script版本。审核者不仅能看页面，也能检查每条业务规则。</p><a id="repo-link-bottom" class="primary-button" href="https://github.com/HululuOvO/replenishiq" target="_blank" rel="noopener"><span>查看GitHub源码</span><span aria-hidden="true">↗</span></a></div>
+       <div class="repo-window" aria-label="项目文件组成">
+         <div class="repo-window-bar"><span><i></i><i></i><i></i></span><b>replenishiq / main</b></div>
+         <div class="repo-file"><span>HTML</span><strong>index.html</strong><small>可操作页面</small></div>
+         <div class="repo-file"><span>JS</span><strong>calculator.js</strong><small>补货计算核心</small></div>
+         <div class="repo-file"><span>TEST</span><strong>calculator.test.js</strong><small>11项回归测试</small></div>
+         <div class="repo-file"><span>GAS</span><strong>replenishment_apps_script.gs</strong><small>Google Sheets版本</small></div>
+         <div class="repo-window-foot"><span>✓ 2026—2030</span><span>✓ 闰年与跨年</span><span>✓ 新SKU导入</span></div>
+       </div>
       </div>
     </section>
   </main>
