@@ -1,4 +1,4 @@
-# ReplenishIQ GitHub Pages 小白发布教程
+# 每周补货判断工具：GitHub Pages发布教程
 
 本教程的目标是把整个项目发布成一个任何人都能直接打开和计算的公开网站。
 
@@ -111,13 +111,13 @@ GitHub 仓库根目录应该直接就是 `index.html`。
 https://你的用户名.github.io/replenishiq/
 ```
 
-点击该地址，应该直接看到 ReplenishIQ 页面，并自动得到默认示例的计算结果。
+点击该地址，应该直接看到“每周补货判断工具”，并自动得到默认示例的计算结果。
 
 ## 六、第一次验收
 
 打开网站后按顺序检查：
 
-1. 首屏显示 `ReplenishIQ`。
+1. 首屏显示“每周补货判断工具”。
 2. 点击“立即在线体验”能跳到计算区域。
 3. 默认选择 `DEMO-FAST`。
 4. 默认日期为 `2026-07-13`。
@@ -167,7 +167,7 @@ const PUBLIC_LINKS = {
 3. 命名为：
 
 ```text
-ReplenishIQ Public Template
+每周补货判断工具 Public Template
 ```
 
 4. 在副本中删除全部真实数据。

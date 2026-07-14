@@ -147,9 +147,9 @@ function renderResult(result) {
 
   if (result.statusCode === 'order') {
     elements.auditText.textContent =
-      '预计入库日期达到或晚于预警周周日。补货天数为' +
-      result.coverDays + '天；平均控制日销包含断货日至覆盖结束日，共' +
-      result.averageCount + '个日期。' + result.status;
+      '预计到仓日期已经晚于安全下单时间，所以本周需要下单。' +
+      '这批货需要覆盖' + result.coverDays + '天；预计每天卖多少件，使用了' +
+      result.averageCount + '天的数据。' + result.status;
   } else {
     elements.auditText.textContent = result.status;
   }
@@ -203,7 +203,7 @@ function resultAsText() {
   const result = lastCalculation;
   const decision = result.needOrder === true ? '是' : result.needOrder === false ? '否' : '待确认';
   return [
-    'ReplenishIQ 补货计算结果',
+      '每周补货判断结果',
     'SKU：' + elements.sku.value,
     '判断周：' + elements.weekMonday.value,
     '本周是否需要下单：' + decision,
@@ -281,7 +281,7 @@ function downloadCsvTemplate() {
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
-  link.download = 'replenishiq_new_sku_template.csv';
+  link.download = 'new_sku_template.csv';
   document.body.appendChild(link);
   link.click();
   link.remove();

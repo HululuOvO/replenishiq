@@ -237,7 +237,7 @@
       result.stockoutDate = formatDay(weekMonday);
       result.needOrder = true;
       result.statusCode = 'persistent-shortage';
-      result.status = '判断周库存已小于或等于0，且预测范围内没有未来入库使库存恢复；标准补货公式停止，请人工确认紧急补货。';
+      result.status = '本周开始时已经没货，而且未来数据里没有看到补货入库。请先检查在途货物，补货数量需要人工决定。';
       return result;
     }
 
@@ -248,20 +248,20 @@
         WARNING_DAYS + NO_STOCKOUT_BUFFER_DAYS
       );
       const prefix = cycle.recoveryRecord
-        ? '已识别到' + cycle.recoveryRecord.date + '库存恢复，恢复后暂未再次断货。'
-        : '当前预测范围内控制库存未降至0。';
+        ? cycle.recoveryRecord.date + '库存恢复后，暂时没有再次断货。'
+        : '目前的数据里还没有出现断货。';
 
       if (lastForecastDay < requiredForecastEnd) {
         result.statusCode = 'insufficient-horizon';
-        result.status = prefix + '预测只到' + formatDay(lastForecastDay) +
-          '，至少需要延伸到' + formatDay(requiredForecastEnd) + '才能安全判断。';
+        result.status = prefix + '但现有数据只到' + formatDay(lastForecastDay) +
+          '。请把预测补到' + formatDay(requiredForecastEnd) + '以后再计算。';
         return result;
       }
 
       result.needOrder = false;
       result.statusCode = 'no-stockout';
-      result.status = prefix + '预测已覆盖到' + formatDay(lastForecastDay) +
-        '，范围足以确认本周无需下单。';
+      result.status = prefix + '数据已经覆盖到' + formatDay(lastForecastDay) +
+        '，本周不用下单。';
       return result;
     }
 
@@ -272,7 +272,7 @@
     if (warningDay < weekMonday) {
       result.needOrder = true;
       result.statusCode = 'overdue';
-      result.status = '断货预警窗口已经错过，标准补货公式不再适用；请人工确认紧急补货数量。';
+      result.status = '正常情况下应该提前下单的时间已经过去。现在需要人工检查库存和在途货物，再决定紧急补货数量。';
       return result;
     }
 
@@ -283,13 +283,13 @@
     result.needOrder = needOrder;
 
     const recoveryPrefix = cycle.recoveryRecord
-      ? '判断周库存已缺货，但' + cycle.recoveryRecord.date +
-        '因未来入库恢复；本次按恢复后的下一轮库存周期判断。'
+      ? '本周开始时已经缺货，但' + cycle.recoveryRecord.date +
+        '有一批货入库，库存恢复。本次从恢复后的新一轮库存开始判断。'
       : '';
 
     if (!needOrder) {
       result.statusCode = 'not-needed';
-      result.status = recoveryPrefix + '预计入库日早于断货预警周周日，本周无需下单。';
+      result.status = recoveryPrefix + '预计到仓时间还在安全范围内，本周不用下单。';
       return result;
     }
 
@@ -312,9 +312,9 @@
     result.coverEndDate = formatDay(coverEndDay);
     result.averageCount = salesResult.count;
     result.statusCode = 'order';
-    result.status = recoveryPrefix + '需要下单；平均日销使用' +
-      salesResult.count + '个连续日期，原始需求' +
-      rawQuantity.toFixed(2) + '件，已按' + casePack + '件/箱向上取整。';
+    result.status = recoveryPrefix + '本周需要下单。系统用' +
+      salesResult.count + '天的数据算出原始需求为' +
+      rawQuantity.toFixed(2) + '件，再按每箱' + casePack + '件向上取整。';
     return result;
   }
 
