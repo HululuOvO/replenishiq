@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="输入SKU、判断周、交期、入库上架天数和箱规，自动判断断货预警、下单时机与补货数量。">
+  <meta name="theme-color" content="#111827">
+  <title>ReplenishIQ｜SKU智能补货决策工具</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="ReplenishIQ 首页">
+      <span class="brand-mark" aria-hidden="true">R</span>
+      <span>ReplenishIQ</span>
+    </a>
+    <nav aria-label="主导航">
+      <a href="#calculator">在线计算</a>
+      <a href="#logic">计算逻辑</a>
+      <a href="#reliability">可靠性</a>
+      <a id="repo-link-top" class="nav-cta is-placeholder" href="#source">查看源码</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero shell">
+      <div class="hero-copy">
+        <p class="eyebrow">AdventureX 2026 · Working Product</p>
+        <h1>把复杂的SKU补货判断，变成一次可审计的计算。</h1>
+        <p class="hero-description">
+          输入判断周、SKU、交期、入库上架天数和箱规，系统自动识别下一轮断货，判断本周是否下单，并生成按箱规取整的建议补货量。
+        </p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#calculator">立即在线体验</a>
+          <a id="sheet-copy-link" class="button button-secondary is-placeholder" href="#source">Google Sheets 完整版</a>
+        </div>
+        <ul class="hero-proof" aria-label="产品特性">
+          <li>无需登录</li>
+          <li>本地计算，不上传数据</li>
+          <li>支持CSV导入新SKU</li>
+          <li>覆盖2026—2030演示数据</li>
+        </ul>
+      </div>
+
+      <aside class="hero-panel" aria-label="产品计算预览">
+        <div class="window-bar">
+          <span></span><span></span><span></span>
+          <small>Decision preview</small>
+        </div>
+        <div class="preview-body">
+          <p class="preview-label">本周是否需要下单</p>
+          <p class="preview-answer">是</p>
+          <div class="preview-grid">
+            <div><span>断货预警</span><strong>2026-09-18</strong></div>
+            <div><span>预计入库</span><strong>2026-09-21</strong></div>
+            <div><span>平均日销</span><strong>42.33</strong></div>
+            <div><span>补货数量</span><strong>720</strong></div>
+          </div>
+          <div class="preview-note">数量已按照8件/箱向上取整</div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="metric-strip" aria-label="核心能力">
+      <div><strong>21天</strong><span>固定断货预警</span></div>
+      <div><strong>5项</strong><span>最少人工输入</span></div>
+      <div><strong>2—4年</strong><span>动态预测周期</span></div>
+      <div><strong>0</strong><span>预测不足时的伪结论</span></div>
+    </section>
+
+    <section id="calculator" class="section shell">
+      <div class="section-heading">
+        <p class="eyebrow">Live calculator</p>
+        <h2>现在就用真实规则算一次</h2>
+        <p>演示数据为虚构库存预测。计算完全在当前浏览器中完成，不会上传你的文件。</p>
+      </div>
+
+      <div class="app-layout">
+        <form id="calculator-form" class="card input-card" novalidate>
+          <div class="card-heading">
+            <div>
+              <p class="step-number">01</p>
+              <h3>输入补货条件</h3>
+            </div>
+            <button id="reset-button" class="text-button" type="button">恢复示例</button>
+          </div>
+
+          <label class="field">
+            <span>判断周周一日期</span>
+            <input id="week-monday" name="weekMonday" type="date" value="2026-07-13" required>
+            <small>业务规则按周判断，因此必须选择星期一。</small>
+          </label>
+
+          <label class="field">
+            <span>SKU</span>
+            <select id="sku" name="sku" required></select>
+            <small id="dataset-summary">正在载入演示SKU…</small>
+          </label>
+
+          <div class="field-row">
+            <label class="field">
+              <span>交期（天）</span>
+              <input id="product-lt" name="productLt" type="number" value="20" min="0" step="1" required>
+            </label>
+            <label class="field">
+              <span>入库上架（天）</span>
+              <input id="logistics-lt" name="logisticsLt" type="number" value="50" min="1" step="1" required>
+            </label>
+          </div>
+
+          <label class="field">
+            <span>箱规（件/箱）</span>
+            <input id="case-pack" name="casePack" type="number" value="8" min="1" step="1" required>
+            <small>最终补货数量会自动向上取整为整箱。</small>
+          </label>
+
+          <button class="button button-primary button-full" type="submit">开始计算</button>
+        </form>
+
+        <section class="card result-card" aria-live="polite" aria-labelledby="result-title">
+          <div class="card-heading">
+            <div>
+              <p class="step-number">02</p>
+              <h3 id="result-title">补货决策结果</h3>
+            </div>
+            <button id="copy-result" class="text-button" type="button">复制结果</button>
+          </div>
+
+          <div id="decision-banner" class="decision-banner decision-idle">
+            <span id="decision-kicker">等待计算</span>
+            <strong id="decision-value">—</strong>
+            <p id="decision-summary">填写左侧条件，然后点击“开始计算”。</p>
+          </div>
+
+          <dl class="result-grid">
+            <div><dt>预计入库日期 A</dt><dd id="result-eta">—</dd></div>
+            <div><dt>预计断货日期 S</dt><dd id="result-stockout">—</dd></div>
+            <div><dt>断货预警日期 B</dt><dd id="result-warning">—</dd></div>
+            <div><dt>预警周周日</dt><dd id="result-warning-sunday">—</dd></div>
+            <div><dt>补货天数 C</dt><dd id="result-cover-days">—</dd></div>
+            <div><dt>平均控制日销 D</dt><dd id="result-avg-sales">—</dd></div>
+            <div class="result-primary"><dt>建议补货数量 E</dt><dd id="result-quantity">—</dd></div>
+            <div><dt>覆盖结束日期 F</dt><dd id="result-cover-end">—</dd></div>
+          </dl>
+
+          <div class="audit-box">
+            <strong>计算审计说明</strong>
+            <p id="audit-text">尚未执行计算。</p>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section id="import" class="section section-muted">
+      <div class="shell import-layout">
+        <div class="section-heading align-left">
+          <p class="eyebrow">Bring your own data</p>
+          <h2>新产品也能直接测试</h2>
+          <p>
+            上传包含日期、SKU、控制销量和控制库存的CSV，网页会自动识别新SKU并加入上方下拉框。数据只在浏览器内存中处理，刷新页面后清除。
+          </p>
+          <div class="import-actions">
+            <label class="button button-primary file-button">
+              选择CSV文件
+              <input id="csv-file" type="file" accept=".csv,text/csv">
+            </label>
+            <button id="download-template" class="button button-secondary" type="button">下载CSV模板</button>
+          </div>
+          <p id="import-status" class="import-status">支持中英文表头。</p>
+        </div>
+
+        <div class="card format-card">
+          <p class="step-number">CSV FORMAT</p>
+          <pre><code>date,sku,control_sales,control_inventory
+2026-07-13,NEW-SKU,32,2100
+2026-07-14,NEW-SKU,35,2065
+2026-07-15,NEW-SKU,31,2034</code></pre>
+          <p>也支持：日期、识别SKU、控制销量、控制库存。</p>
+          <ul>
+            <li>日期需要逐日连续</li>
+            <li>不能存在重复日期</li>
+            <li>控制销量不能为负数</li>
+            <li>预测范围必须覆盖计算区间</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="logic" class="section shell">
+      <div class="section-heading">
+        <p class="eyebrow">Auditable logic</p>
+        <h2>每一个结果都有可追溯的业务依据</h2>
+      </div>
+      <div class="logic-grid">
+        <article class="logic-card">
+          <span>01</span><h3>预计入库</h3>
+          <p>A = 判断周周一 + 交期 + 入库上架天数</p>
+        </article>
+        <article class="logic-card">
+          <span>02</span><h3>断货预警</h3>
+          <p>B = 下一轮预计断货日期 − 固定21天</p>
+        </article>
+        <article class="logic-card">
+          <span>03</span><h3>下单判断</h3>
+          <p>A晚于或等于B所在周的周日，则本周需要下单。</p>
+        </article>
+        <article class="logic-card">
+          <span>04</span><h3>整箱补货</h3>
+          <p>C = A − B + 14；E = C × 平均日销，并按箱规向上取整。</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="reliability" class="section section-dark">
+      <div class="shell">
+        <div class="section-heading align-left light">
+          <p class="eyebrow">Reliability by design</p>
+          <h2>不为了给答案而编造答案</h2>
+          <p>供应链决策最危险的不是空白，而是看起来精确的错误结果。</p>
+        </div>
+        <div class="reliability-grid">
+          <article><strong>预测范围保护</strong><p>没有足够未来数据时，结果保持“待确认”，不会把“没找到断货”误判成“无需下单”。</p></article>
+          <article><strong>库存周期识别</strong><p>判断周已经缺货但未来会入库时，跳过当前缺货段，从恢复后的新周期寻找下一次断货。</p></article>
+          <article><strong>日期完整性</strong><p>检查星期一、连续日期、重复日期、跨年与闰年，避免一天偏差改变下单结论。</p></article>
+          <article><strong>异常停止机制</strong><p>持续缺货、预警逾期、控制销量缺失等情况停止标准算量，并明确提示人工介入。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="source" class="section shell source-section">
+      <div>
+        <p class="eyebrow">Open implementation</p>
+        <h2>网页演示之外，还有可落地的Google Sheets版本</h2>
+        <p>
+          完整版使用Google Apps Script连接SKU明细页，支持编辑后自动计算、批量计算、每周定时计算，以及未来新SKU工作表的动态识别。
+        </p>
+      </div>
+      <div class="source-actions">
+        <a id="repo-link-bottom" class="button button-primary is-placeholder" href="#source">查看GitHub源码</a>
+        <a id="sheet-copy-link-bottom" class="button button-secondary is-placeholder" href="#source">复制Google Sheets模板</a>
+      </div>
+      <p class="placeholder-note">
+        发布前请在 <code>app.js</code> 的 <code>PUBLIC_LINKS</code> 中填写GitHub仓库和脱敏Google模板地址。
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-inner">
+      <div><strong>ReplenishIQ</strong><p>SKU replenishment decisions that can be explained.</p></div>
+      <p>Public demo uses synthetic data only · AdventureX 2026</p>
+    </div>
+  </footer>
+
+  <script src="./calculator.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
