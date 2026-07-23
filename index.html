@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="输入SKU、判断周、交期、入库上架天数和箱规，自动判断断货预警、下单时机与补货数量。">
+  <meta name="description" content="使用虚构演示数据，输入SKU、判断周、交期、入库上架天数、预警天数和箱规，自动判断下单时机与补货数量。">
   <meta name="theme-color" content="#ffffff">
   <title>ReplenishIQ｜补货判断工作台</title>
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
   <div class="page-ambient" aria-hidden="true"><i></i><i></i><i></i></div>
-  <div class="announcement"><span class="announce-dot" aria-hidden="true"></span>公开演示版 · 数据只在当前浏览器内处理 <span class="announce-arrow" aria-hidden="true">→</span></div>
+  <div class="announcement"><span class="announce-dot" aria-hidden="true"></span>公开脱敏演示版 · 全部示例均为虚构数据 · 不连接任何公司系统 <span class="announce-arrow" aria-hidden="true">→</span></div>
 
   <header class="topbar">
     <a class="brand" href="#top" aria-label="返回工作台顶部">
@@ -23,8 +23,8 @@
       <a href="#import">导入</a>
       <a href="#logic">规则</a>
     </nav>
-    <a id="repo-link-top" class="top-action" href="https://github.com/HululuOvO/replenishiq" target="_blank" rel="noopener">
-      <span>GitHub</span><span aria-hidden="true">↗</span>
+    <a class="top-action" href="#privacy">
+      <span>脱敏说明</span><span aria-hidden="true">↓</span>
     </a>
   </header>
 
@@ -37,12 +37,12 @@
             <h1 id="page-title">让每周补货判断<br><em>更快，也更清楚。</em></h1>
             <p>输入一个SKU的本周条件，系统会沿着未来库存曲线找到断货点，并计算下单时间和整箱补货数量。</p>
           </div>
-          <div class="header-meta"><span>规则版本</span><strong>v1.0 · 21天预警</strong></div>
+          <div class="header-meta"><span>规则版本</span><strong>v1.1 · 预警天数可填写</strong></div>
         </div>
 
         <div class="quick-strip entrance entrance-two" aria-label="工具能力概览">
           <div><span>预测范围</span><strong>2026–2030</strong></div>
-          <div><span>演示SKU</span><strong>20个</strong></div>
+          <div><span>虚构场景</span><strong>3种</strong></div>
           <div><span>计算输出</span><strong>8项</strong></div>
           <div class="quick-live"><span><i></i>当前状态</span><strong>可直接使用</strong></div>
         </div>
@@ -78,11 +78,18 @@
               </label>
             </div>
 
-            <label class="field">
-              <span>箱规</span>
-              <span class="input-unit"><input id="case-pack" name="casePack" type="number" value="8" min="1" step="1" inputmode="numeric" required><i>件 / 箱</i></span>
-              <small>建议数量会自动向上取整为整箱。</small>
-            </label>
+            <div class="field-row">
+              <label class="field">
+                <span>断货预警天数</span>
+                <span class="input-unit"><input id="warning-days" name="warningDays" type="number" value="21" min="1" step="1" inputmode="numeric" required><i>天</i></span>
+                <small>按该产品的业务规则填写。</small>
+              </label>
+              <label class="field">
+                <span>箱规</span>
+                <span class="input-unit"><input id="case-pack" name="casePack" type="number" value="8" min="1" step="1" inputmode="numeric" required><i>件 / 箱</i></span>
+                <small>结果自动向上取整为整箱。</small>
+              </label>
+            </div>
 
             <button class="primary-button" type="submit"><span>计算补货结果</span><span aria-hidden="true">→</span></button>
           </form>
@@ -172,12 +179,12 @@
         <div class="product-map">
           <article>
             <span class="map-index">输入</span>
-            <div><strong>只填写5项条件</strong><p>判断周、SKU、生产交期、入库上架天数和箱规。</p></div>
+            <div><strong>只填写6项条件</strong><p>判断周、SKU、生产交期、入库上架天数、预警天数和箱规。</p></div>
             <b aria-hidden="true">→</b>
           </article>
           <article>
             <span class="map-index">分析</span>
-            <div><strong>沿未来库存寻找风险</strong><p>识别下一次有效断货，自动生成21天预警并判断本周时机。</p></div>
+            <div><strong>沿未来库存寻找风险</strong><p>识别下一次有效断货，按该产品的预警天数判断本周时机。</p></div>
             <b aria-hidden="true">⌁</b>
           </article>
           <article>
@@ -231,9 +238,9 @@
         </div>
        </div>
       <div class="impact-list">
-        <div><strong>5 → 8</strong><p>填写5项条件，一次输出8项补货结果</p></div>
+        <div><strong>6 → 8</strong><p>填写6项条件，一次输出8项补货结果</p></div>
         <div><strong>1,826</strong><p>单个SKU可连续检查约5年的日级数据</p></div>
-        <div><strong>36,520</strong><p>20个SKU的演示记录可自动分组和校验</p></div>
+        <div><strong>5,478</strong><p>3种虚构场景的日级记录可自动分组和校验</p></div>
         <div><strong>0次</strong><p>补货数量无需再手工换算整箱</p></div>
        </div>
       </div>
@@ -260,7 +267,7 @@
        </div>
       <ol class="logic-list">
         <li><span>A</span><div><strong>预计入库日期</strong><p>周一 + 生产交期 + 入库上架天数。</p></div></li>
-        <li><span>B</span><div><strong>断货预警日期</strong><p>下一次预计断货日向前推21天。</p></div></li>
+        <li><span>B</span><div><strong>断货预警日期</strong><p>下一次预计断货日向前推该产品填写的预警天数。</p></div></li>
         <li><span>判</span><div><strong>本周下单判断</strong><p>A晚于或等于B所在周周日，则需要下单。</p></div></li>
         <li><span>E</span><div><strong>整箱补货数量</strong><p>覆盖天数 × 平均日销，再按箱规向上取整。</p></div></li>
        </ol>
@@ -284,24 +291,25 @@
       </div>
     </section>
 
-    <section class="story-stage source-stage">
+    <section id="privacy" class="story-stage source-stage">
       <div class="source-section story-card reveal" data-story-card>
-       <div class="source-copy"><p class="eyebrow">OPEN SOURCE</p><h2>公开逻辑，方便审核和复用</h2><p>仓库同时提供网页工具、计算核心、自动化测试和Google Sheets Apps Script版本。审核者不仅能看页面，也能检查每条业务规则。</p><a id="repo-link-bottom" class="primary-button" href="https://github.com/HululuOvO/replenishiq" target="_blank" rel="noopener"><span>查看GitHub源码</span><span aria-hidden="true">↗</span></a></div>
-       <div class="repo-window" aria-label="项目文件组成">
-         <div class="repo-window-bar"><span><i></i><i></i><i></i></span><b>replenishiq / main</b></div>
-         <div class="repo-file"><span>HTML</span><strong>index.html</strong><small>可操作页面</small></div>
-         <div class="repo-file"><span>JS</span><strong>calculator.js</strong><small>补货计算核心</small></div>
-         <div class="repo-file"><span>TEST</span><strong>calculator.test.js</strong><small>11项回归测试</small></div>
-         <div class="repo-file"><span>GAS</span><strong>replenishment_apps_script.gs</strong><small>Google Sheets版本</small></div>
+       <div class="source-copy"><p class="eyebrow">PUBLIC &amp; SAFE</p><h2>脱敏后，才适合对外展示</h2><p>这个链接只保留工具能力和虚构演示场景。它不会显示真实店铺、SKU、库存、销量、人员信息或在线表格地址，也不会连接任何公司系统。</p><a class="primary-button" href="#calculator"><span>返回工作台</span><span aria-hidden="true">↑</span></a></div>
+       <div class="repo-window" aria-label="公开版脱敏检查">
+         <div class="repo-window-bar"><span><i></i><i></i><i></i></span><b>public demo / privacy</b></div>
+         <div class="repo-file"><span>DATA</span><strong>DEMO-* 虚构数据</strong><small>不含真实业务记录</small></div>
+         <div class="repo-file"><span>LINK</span><strong>未连接在线表格</strong><small>不读取内部数据</small></div>
+         <div class="repo-file"><span>LOCAL</span><strong>浏览器本地计算</strong><small>CSV不会上传服务器</small></div>
+         <div class="repo-file"><span>TEST</span><strong>13项回归测试</strong><small>核心规则已检查</small></div>
          <div class="repo-window-foot"><span>✓ 2026—2030</span><span>✓ 闰年与跨年</span><span>✓ 新SKU导入</span></div>
        </div>
       </div>
     </section>
   </main>
 
-  <footer><strong>ReplenishIQ</strong><span>公开版使用虚构演示数据 · JavaScript + Google Sheets</span></footer>
+  <footer><strong>ReplenishIQ</strong><span>已脱敏公开版 · 虚构演示数据 · 浏览器本地计算</span></footer>
 
   <script src="./calculator.js"></script>
   <script src="./app.js"></script>
 </body>
 </html>
+

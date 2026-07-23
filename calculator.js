@@ -9,7 +9,7 @@
   'use strict';
 
   const DAY_MS = 24 * 60 * 60 * 1000;
-  const WARNING_DAYS = 21;
+  const DEFAULT_WARNING_DAYS = 21;
   const SAFETY_COVER_DAYS = 14;
   const NO_STOCKOUT_BUFFER_DAYS = 7;
   const INCLUDE_COVER_END_DATE = true;
@@ -213,6 +213,7 @@
     if (!sku) throw new Error('请选择或输入SKU');
     const productLt = requireInteger(settings.productLt, '交期', 0);
     const logisticsLt = requireInteger(settings.logisticsLt, '入库上架天数', 1);
+    const warningDays = requireInteger(settings.warningDays, '断货预警天数', 1);
     const casePack = requireInteger(settings.casePack, '箱规', 1);
     const records = normalizeRecords(rawRecords, sku);
     const eta = addDays(weekMonday, productLt + logisticsLt);
@@ -245,7 +246,7 @@
       const lastForecastDay = futureRecords[futureRecords.length - 1].day;
       const requiredForecastEnd = addDays(
         eta,
-        WARNING_DAYS + NO_STOCKOUT_BUFFER_DAYS
+        warningDays + NO_STOCKOUT_BUFFER_DAYS
       );
       const prefix = cycle.recoveryRecord
         ? cycle.recoveryRecord.date + '库存恢复后，暂时没有再次断货。'
@@ -266,7 +267,7 @@
     }
 
     const stockoutDay = cycle.stockoutRecord.day;
-    const warningDay = addDays(stockoutDay, -WARNING_DAYS);
+    const warningDay = addDays(stockoutDay, -warningDays);
     result.stockoutDate = formatDay(stockoutDay);
 
     if (warningDay < weekMonday) {
@@ -516,7 +517,7 @@
 
   return {
     constants: {
-      WARNING_DAYS: WARNING_DAYS,
+      DEFAULT_WARNING_DAYS: DEFAULT_WARNING_DAYS,
       SAFETY_COVER_DAYS: SAFETY_COVER_DAYS,
       INCLUDE_COVER_END_DATE: INCLUDE_COVER_END_DATE
     },
@@ -532,3 +533,5 @@
     roundUpToCasePack: roundUpToCasePack
   };
 });
+
+

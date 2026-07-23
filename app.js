@@ -2,7 +2,7 @@
 
 /* 发布前只需要替换这两个地址；留空时网站其他计算功能不受影响。 */
 const PUBLIC_LINKS = {
-  githubRepository: 'https://github.com/HululuOvO/replenishiq',
+  githubRepository: '',
   googleSheetCopy: ''
 };
 
@@ -16,6 +16,7 @@ const elements = {
   sku: document.querySelector('#sku'),
   productLt: document.querySelector('#product-lt'),
   logisticsLt: document.querySelector('#logistics-lt'),
+  warningDays: document.querySelector('#warning-days'),
   casePack: document.querySelector('#case-pack'),
   resetButton: document.querySelector('#reset-button'),
   copyResult: document.querySelector('#copy-result'),
@@ -116,7 +117,7 @@ function renderInventoryChart() {
   const visible = records.slice(startIndex, startIndex + 140);
   if (visible.length < 2) return;
 
-  const inventories = visible.map(function (record) { return Number(record.controlInventory); });
+  const inventories = visible.map(function (record) { return Number(record.controlStock); });
   const maximum = Math.max.apply(null, inventories.concat([1]));
   const minimum = Math.min.apply(null, inventories.concat([0]));
   const range = Math.max(1, maximum - minimum);
@@ -165,6 +166,7 @@ function getSettings() {
     sku: elements.sku.value,
     productLt: elements.productLt.value,
     logisticsLt: elements.logisticsLt.value,
+    warningDays: elements.warningDays.value,
     casePack: elements.casePack.value
   };
 }
@@ -285,6 +287,7 @@ function resetDemo() {
   elements.sku.value = 'DEMO-FAST';
   elements.productLt.value = '20';
   elements.logisticsLt.value = '50';
+  elements.warningDays.value = '21';
   elements.casePack.value = '8';
   updateDatasetSummary();
   runCalculation();
@@ -298,6 +301,7 @@ function resultAsText() {
       '每周补货判断结果',
     'SKU：' + elements.sku.value,
     '判断周：' + elements.weekMonday.value,
+    '断货预警天数：' + elements.warningDays.value + '天',
     '本周是否需要下单：' + decision,
     '预计入库日期A：' + displayValue(result.eta),
     '预计断货日期S：' + displayValue(result.stockoutDate),
@@ -473,3 +477,4 @@ if (typeof reducedMotion.addEventListener === 'function') {
   reducedMotion.addEventListener('change', requestStoryMotion);
 }
 updateStoryMotion();
+
